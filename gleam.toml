@@ -1,0 +1,22 @@
+name = "rrule"
+version = "1.0.0"
+description = "A library for parsing, generating, and working with iCalendar RRULE (recurrence rule) strings according to RFC 5545"
+licences = ["Apache-2.0"]
+repository = { type = "github", user = "gleam-community", repo = "rrule" }
+links = [
+  { title = "Repository", href = "https://github.com/gleam-community/rrule" },
+  { title = "RFC 5545", href = "https://tools.ietf.org/html/rfc5545" }
+]
+
+# Package keywords for discoverability
+keywords = ["rrule", "icalendar", "rfc5545", "recurrence", "calendar", "datetime"]
+
+# For a full reference of all the available options, you can have a look at
+# https://gleam.run/writing-gleam/gleam-toml/.
+
+[dependencies]
+gleam_stdlib = ">= 0.44.0 and < 2.0.0"
+gleam_time = ">= 1.4.0 and < 2.0.0"
+
+[dev-dependencies]
+gleeunit = ">= 1.0.0 and < 2.0.0"
