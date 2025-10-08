@@ -5,7 +5,7 @@ import gleam/time/duration
 import gleam/time/timestamp
 import gleeunit
 import gleeunit/should
-import rrule.{
+import recur.{
   Daily, Friday, Monday, Monthly, Weekly, Yearly, from_string,
   generate_occurrences, get_frequency, get_interval, has_end_condition, is_valid,
   new, next_occurrence, to_string, weekday_occurrence,

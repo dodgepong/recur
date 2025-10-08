@@ -9,19 +9,19 @@
 //// ## Basic Usage
 ////
 //// ```gleam
-//// import rrule
+//// import recur
 //// import gleam/time/timestamp
 ////
 //// // Create a daily recurrence for 10 occurrences
-//// let rule = rrule.new(rrule.Daily) |> rrule.with_count(10)
-//// let rrule_string = rrule.to_string(rule)  // "FREQ=DAILY;COUNT=10"
+//// let rule = recur.new(recur.Daily) |> recur.with_count(10)
+//// let rrule_string = recur.to_string(rule)  // "FREQ=DAILY;COUNT=10"
 ////
 //// // Parse an RRULE string
-//// let assert Ok(parsed_rule) = rrule.from_string("FREQ=WEEKLY;BYDAY=MO,WE,FR")
+//// let assert Ok(parsed_rule) = recur.from_string("FREQ=WEEKLY;BYDAY=MO,WE,FR")
 ////
 //// // Generate occurrence dates
 //// let assert Ok(start) = timestamp.parse_rfc3339("2024-01-01T10:00:00Z")
-//// let occurrences = rrule.generate_occurrences(rule, start, None)
+//// let occurrences = recur.generate_occurrences(rule, start, None)
 //// ```
 ////
 //// ## RRULE Components

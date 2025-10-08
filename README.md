@@ -1,7 +1,7 @@
-# RRULE for Gleam
+# Recur for Gleam
 
-[![Package Version](https://img.shields.io/hexpm/v/rrule)](https://hex.pm/packages/rrule)
-[![Hex Docs](https://img.shields.io/badge/hex-docs-ffaff3)](https://hexdocs.pm/rrule/)
+[![Package Version](https://img.shields.io/hexpm/v/recur)](https://hex.pm/packages/recur)
+[![Hex Docs](https://img.shields.io/badge/hex-docs-ffaff3)](https://hexdocs.pm/recur/)
 
 A comprehensive library for parsing, generating, and working with iCalendar RRULE (recurrence rule) strings according to RFC 5545.
 
@@ -13,33 +13,33 @@ This library provides utilities to:
 
 ## Installation
 
-Add `rrule` to your Gleam project:
+Add `recur` to your Gleam project:
 
 ```sh
-gleam add rrule
+gleam add recur
 ```
 
 ## Quick Start
 
 ```gleam
-import rrule
+import recur
 import gleam/time/timestamp
 import gleam/io
 
 pub fn main() {
   // Create a daily recurrence for 5 occurrences
-  let rule = rrule.new(rrule.Daily) |> rrule.with_count(5)
+  let rule = recur.new(recur.Daily) |> recur.with_count(5)
   
   // Convert to string
-  let rrule_string = rrule.to_string(rule)
+  let rrule_string = recur.to_string(rule)
   io.println(rrule_string)  // "FREQ=DAILY;COUNT=5"
   
   // Parse an RRULE string  
-  let assert Ok(parsed) = rrule.from_string("FREQ=WEEKLY;BYDAY=MO,WE,FR")
+  let assert Ok(parsed) = recur.from_string("FREQ=WEEKLY;BYDAY=MO,WE,FR")
   
   // Generate occurrence dates
   let assert Ok(start) = timestamp.parse_rfc3339("2024-01-01T10:00:00Z")
-  let occurrences = rrule.generate_occurrences(rule, start, None)
+  let occurrences = recur.generate_occurrences(rule, start, None)
   
   io.debug(occurrences)  // List of 5 timestamps
 }
@@ -66,14 +66,14 @@ This library supports the core RRULE parameters from RFC 5545:
 The library integrates with `gleam_time` to provide real date calculation:
 
 ```gleam
-import rrule
+import recur
 import gleam/time/timestamp
 
 // Find the next occurrence after a given date
 let assert Ok(start) = timestamp.parse_rfc3339("2024-01-01T10:00:00Z")
-let rule = rrule.new(rrule.Daily)
+let rule = recur.new(recur.Daily)
 
-case rrule.next_occurrence(rule, start) {
+case recur.next_occurrence(rule, start) {
   Some(next) -> {
     // next is 2024-01-02T10:00:00Z
   }
@@ -89,13 +89,13 @@ case rrule.next_occurrence(rule, start) {
 
 ```gleam
 // Every day for 10 occurrences
-let rule = rrule.new(rrule.Daily) |> rrule.with_count(10)
+let rule = recur.new(recur.Daily) |> recur.with_count(10)
 
 // Every other day until Dec 31, 2024
 let assert Ok(until) = timestamp.parse_rfc3339("2024-12-31T23:59:59Z")
-let rule = rrule.new(rrule.Daily) 
-  |> rrule.with_interval(2)
-  |> rrule.with_until(until)
+let rule = recur.new(recur.Daily) 
+  |> recur.with_interval(2)
+  |> recur.with_until(until)
 ```
 
 ### Weekly Recurrence
@@ -103,18 +103,18 @@ let rule = rrule.new(rrule.Daily)
 ```gleam
 // Every Monday, Wednesday, and Friday
 let weekdays = [
-  rrule.weekday_occurrence(rrule.Monday),
-  rrule.weekday_occurrence(rrule.Wednesday), 
-  rrule.weekday_occurrence(rrule.Friday)
+  recur.weekday_occurrence(recur.Monday),
+  recur.weekday_occurrence(recur.Wednesday), 
+  recur.weekday_occurrence(recur.Friday)
 ]
-let rule = rrule.new(rrule.Weekly) |> rrule.with_by_day(weekdays)
+let rule = recur.new(recur.Weekly) |> recur.with_by_day(weekdays)
 
 // Every 2 weeks on Tuesday and Thursday
-let rule = rrule.new(rrule.Weekly)
-  |> rrule.with_interval(2)
-  |> rrule.with_by_day([
-      rrule.weekday_occurrence(rrule.Tuesday),
-      rrule.weekday_occurrence(rrule.Thursday)
+let rule = recur.new(recur.Weekly)
+  |> recur.with_interval(2)
+  |> recur.with_by_day([
+      recur.weekday_occurrence(recur.Tuesday),
+      recur.weekday_occurrence(recur.Thursday)
     ])
 ```
 
@@ -123,21 +123,21 @@ let rule = rrule.new(rrule.Weekly)
 ```gleam
 // First and third Monday of each month
 let positioned_weekdays = [
-  rrule.weekday_occurrence_with_number(rrule.Monday, 1),  // First Monday
-  rrule.weekday_occurrence_with_number(rrule.Monday, 3)   // Third Monday
+  recur.weekday_occurrence_with_number(recur.Monday, 1),  // First Monday
+  recur.weekday_occurrence_with_number(recur.Monday, 3)   // Third Monday
 ]
-let rule = rrule.new(rrule.Monthly) |> rrule.with_by_day(positioned_weekdays)
+let rule = recur.new(recur.Monthly) |> recur.with_by_day(positioned_weekdays)
 
 // Last Friday of each month
-let last_friday = [rrule.weekday_occurrence_with_number(rrule.Friday, -1)]
-let rule = rrule.new(rrule.Monthly) |> rrule.with_by_day(last_friday)
+let last_friday = [recur.weekday_occurrence_with_number(recur.Friday, -1)]
+let rule = recur.new(recur.Monthly) |> recur.with_by_day(last_friday)
 ```
 
 ### Yearly Recurrence
 
 ```gleam
 // Every June and December
-let rule = rrule.new(rrule.Yearly) |> rrule.with_by_month([6, 12])
+let rule = recur.new(recur.Yearly) |> recur.with_by_month([6, 12])
 ```
 
 ### Parsing Existing RRULEs
@@ -145,10 +145,10 @@ let rule = rrule.new(rrule.Yearly) |> rrule.with_by_month([6, 12])
 ```gleam
 // Parse complex RRULE strings
 let complex = "FREQ=WEEKLY;INTERVAL=2;BYDAY=MO,WE,FR;COUNT=20"
-let assert Ok(rule) = rrule.from_string(complex)
+let assert Ok(rule) = recur.from_string(complex)
 
 // Convert back to string
-let regenerated = rrule.to_string(rule)
+let regenerated = recur.to_string(rule)
 ```
 
 ## API Reference
